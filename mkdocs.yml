@@ -1,0 +1,33 @@
+site_name: Enrique Montalvo
+site_description: Sistemas, infraestructura y seguridad
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: slate
+      primary: blue grey
+      accent: light blue
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+nav:
+  - Inicio: index.md
+  - Proyectos:
+      - Inventario de activos con GLPI: proyectos/glpi.md
+      - SIEM distribuido con Wazuh: proyectos/wazuh.md
+      - Lab de Active Directory: proyectos/lab-ad.md
