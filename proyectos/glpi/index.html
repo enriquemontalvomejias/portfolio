@@ -1,0 +1,827 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistemas, infraestructura y seguridad">
+      
+      
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../wazuh/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Inventario de activos con GLPI - Enrique Montalvo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#inventario-de-activos-multi-tenant-con-glpi" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Enrique Montalvo" class="md-header__button md-logo" aria-label="Enrique Montalvo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enrique Montalvo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Inventario de activos con GLPI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enrique Montalvo" class="md-nav__button md-logo" aria-label="Enrique Montalvo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enrique Montalvo
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proyectos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Proyectos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inventario de activos con GLPI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inventario de activos con GLPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#la-solucion-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La solución de negocio
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitectura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asignacion-automatica-a-entidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asignación automática a entidades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-del-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Despliegue del agente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#con-que-me-pelee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Con qué me peleé
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estado-y-siguientes-pasos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estado y siguientes pasos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wazuh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SIEM distribuido con Wazuh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab-ad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab de Active Directory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#la-solucion-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La solución de negocio
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitectura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asignacion-automatica-a-entidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asignación automática a entidades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-del-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Despliegue del agente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#con-que-me-pelee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Con qué me peleé
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estado-y-siguientes-pasos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estado y siguientes pasos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="inventario-de-activos-multi-tenant-con-glpi">Inventario de activos multi-tenant con GLPI</h1>
+<p>Diseño y despliegue de una plataforma de inventario de activos IT para una veintena
+de organizaciones cliente y unos 600 endpoints, sustituyendo el mantenimiento manual
+en hojas de cálculo.</p>
+<div class="admonition info">
+<p class="admonition-title">Contexto</p>
+<p>Proyecto realizado en un proveedor de servicios gestionados (MSP) que da soporte
+a clientes de distintos sectores. Los nombres de cliente, dominios internos y
+direccionamiento se han omitido u ofuscado.</p>
+</div>
+<hr />
+<h2 id="la-solucion-de-negocio">La solución de negocio</h2>
+<p>Un MSP con una veintena de clientes bajo contrato de mantenimiento necesita responder
+a preguntas que parecen triviales y no lo son cuando el dato vive en hojas de cálculo
+mantenidas a mano: cuántos equipos tiene realmente cada cliente, cuáles se quedan sin
+soporte el año que viene, qué máquina tiene asignada una persona concreta, o qué
+equipos llevan meses sin conectarse.</p>
+<p>La plataforma resuelve eso con un inventario que se actualiza solo. Cada endpoint
+reporta su propio hardware, software y estado, y el dato aterriza en la entidad del
+cliente al que pertenece. A partir de ahí:</p>
+<ul>
+<li><strong>Renovaciones y presupuestos</strong> con datos reales de parque, no estimaciones.</li>
+<li><strong>Obsolescencia</strong> detectable por antigüedad y por versión de sistema operativo.</li>
+<li><strong>Trazabilidad de asignación</strong>: quién tiene qué equipo, y en qué estado está.</li>
+<li><strong>Aislamiento entre clientes</strong>: cada entidad ve su propio parque y nada más.</li>
+</ul>
+<p>El alcance se acotó deliberadamente a inventario. El ticketing ya estaba resuelto con
+otra herramienta y meter ambas cosas en el mismo sistema habría convertido un proyecto
+de tres meses en uno de un año.</p>
+<hr />
+<h2 id="arquitectura">Arquitectura</h2>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Clientes["Parque de clientes (~600 endpoints)"]
+        A1["Equipos en dominio&lt;br/&gt;Cliente A"]
+        A2["Equipos en dominio&lt;br/&gt;Cliente B"]
+        A3["Equipos fuera de dominio&lt;br/&gt;(reserva / móviles)"]
+    end
+
+    subgraph Infra["Infraestructura del servicio"]
+        LB["Apache + TLS&lt;br/&gt;(Let's Encrypt)"]
+        GLPI["GLPI 11"]
+        DB[("MariaDB")]
+    end
+
+    A1 --&gt;|Inventario XML| LB
+    A2 --&gt;|Inventario XML| LB
+    A3 --&gt;|Inventario XML| LB
+    LB --&gt; GLPI
+    GLPI --&gt; DB
+
+    GLPI -.-&gt;|Reglas de asignación| ENT["Entidades por cliente"]</code></pre>
+<p><strong>Servidor.</strong> GLPI 11 sobre una máquina virtual Linux en un hipervisor propio, con
+Apache como frontal y MariaDB como backend. Certificado de Let's Encrypt emitido por
+desafío DNS-01, porque el servicio no se expone en el puerto 80 y el desafío HTTP-01
+no era viable.</p>
+<p><strong>Publicación.</strong> El servicio se publica en un puerto no estándar. Esta decisión, que
+parecía menor, resultó ser el punto más conflictivo del proyecto: los clientes cuyo
+tráfico sale por un proxy corporativo o por una solución SASE no siempre tienen
+permitidos puertos distintos del 443 hacia destinos externos, y el agente falla en
+silencio. En despliegues nuevos conviene resolver el NAT al 443 antes de tocar
+ningún endpoint.</p>
+<p><strong>Multi-tenancy.</strong> GLPI organiza los datos en entidades. Cada cliente es una entidad,
+y los técnicos ven el conjunto mientras que cada contexto de cliente queda separado.
+El acceso está limitado al equipo técnico; la integración con LDAP y el SSO se
+aplazaron conscientemente por ser tres personas.</p>
+<hr />
+<h2 id="asignacion-automatica-a-entidades">Asignación automática a entidades</h2>
+<p>Es la pieza que hace que el sistema escale: si cada equipo nuevo hubiera que moverlo
+a mano a su cliente, el inventario automático no valdría de nada.</p>
+<p><strong>Equipos en dominio.</strong> Las reglas de asignación se basan en la pertenencia al dominio
+de Active Directory. El equipo reporta su dominio en el inventario y GLPI lo encamina
+a la entidad correspondiente.</p>
+<p><strong>Equipos fuera de dominio.</strong> Para máquinas de reserva o equipos sueltos que no están
+unidos a ningún dominio, la identificación se hace por TAG, escrito en el registro de
+Windows:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="s1">'HKLM:\SOFTWARE\GLPI-Agent'</span> <span class="n">-Name</span> <span class="s1">'tag'</span> <span class="n">-Value</span> <span class="s1">'CLIENTE_X'</span>
+<span class="nb">Restart-Service</span> <span class="s1">'GLPI-Agent'</span>
+</code></pre></div>
+<p>Un matiz importante que descubrí probando: el TAG identifica el contexto en el XML de
+inventario, pero <strong>no asigna la entidad por sí solo</strong>. Hacen falta reglas explícitas en
+<em>Administración &gt; Reglas &gt; Reglas de asignación a una entidad</em> que lo consuman. Sin
+ellas, el TAG viaja hasta el servidor y no hace nada.</p>
+<hr />
+<h2 id="despliegue-del-agente">Despliegue del agente</h2>
+<p>Tres vías según el tipo de equipo, todas sobre GLPI Agent 1.18 x64.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">GPO</label><label for="__tabbed_1_2">Intune</label><label for="__tabbed_1_3">Manual</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Para equipos en dominio. El MSI se publica como aplicación asignada desde
+directiva de grupo, con los parámetros de servidor y TAG pasados en la
+instalación. Es el camino por defecto y cubre la mayor parte del parque.</p>
+</div>
+<div class="tabbed-block">
+<p>Para equipos gestionados desde la nube. El MSI se empaqueta como <code>.intunewin</code>
+con IntuneWinAppUtil y se despliega como aplicación Win32. La regla de detección
+apunta a <code>HKLM\SOFTWARE\GLPI-Agent</code>, valor <code>server</code>, en vez de a un archivo o a
+una versión de producto: es más fiable porque comprueba que el agente está
+<em>configurado</em>, no solo instalado.</p>
+</div>
+<div class="tabbed-block">
+<p>Para equipos sueltos, pruebas o máquinas que no encajan en ninguna de las dos
+anteriores. Un script de PowerShell propio instala el MSI, escribe la
+configuración y fuerza un inventario inmediato para validar el resultado sin
+esperar al ciclo normal del agente.</p>
+</div>
+</div>
+</div>
+<p>En el despliegue por Intune, el código de retorno <strong>1618</strong> está configurado como
+reintento. Ese código significa que otro instalador tiene tomado el mutex de Windows
+Installer, típicamente Windows Update. A escala de cientos de equipos aparece sí o sí,
+y si no se trata como reintento se interpreta como fallo de despliegue.</p>
+<hr />
+<h2 id="con-que-me-pelee">Con qué me peleé</h2>
+<p><strong>La configuración no está donde la documentación sugiere.</strong> En GLPI Agent 1.18 sobre
+Windows, los valores de servidor y TAG viven en el registro
+(<code>HKLM:\SOFTWARE\GLPI-Agent</code>), no en <code>agent.cfg</code>. Editar el fichero no produce ningún
+efecto. Cualquier corrección pasa por <code>Set-ItemProperty</code> y reinicio del servicio.</p>
+<p><strong>Forzar un inventario.</strong> La forma fiable no es invocar el ejecutable del agente, sino
+el endpoint HTTP que el propio agente expone en local:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="s1">'http://localhost:62354/now'</span>
+</code></pre></div>
+<p>Esto acortó los ciclos de prueba de horas a segundos.</p>
+<p><strong>Cambiar un TAG no reescribe el pasado.</strong> Si una máquina ya se importó en la entidad
+equivocada, corregir el TAG arregla los inventarios futuros pero no reevalúa las reglas
+sobre el registro ya existente. Hay que transferir el activo a mano o purgarlo. Lección:
+validar las reglas de asignación contra un grupo pequeño antes de soltar el despliegue
+masivo.</p>
+<p><strong>El agente pisa lo que escribes a mano.</strong> El inventario sobrescribe campos como el
+usuario asignado en cada sincronización. La solución es el bloqueo de campos en GLPI,
+que marca ciertos valores como gestionados manualmente y los protege del agente.</p>
+<p><strong>Definir el catálogo de estados antes, no después.</strong> Establecer los estados posibles
+(en stock, cedido temporal, en uso, retirado) antes del despliegue masivo evita una
+limpieza retroactiva sobre cientos de registros.</p>
+<p><strong>Hairpin NAT.</strong> Verificar la publicación con <code>curl</code> desde el propio servidor da
+resultados engañosos. La comprobación válida se hace desde una máquina externa o desde
+la red del cliente.</p>
+<p><strong>Detalle de PowerShell.</strong> <code>$args</code> es una variable automática reservada; usarla como
+nombre para los parámetros del MSI provoca comportamientos difíciles de diagnosticar.</p>
+<hr />
+<h2 id="estado-y-siguientes-pasos">Estado y siguientes pasos</h2>
+<p>La plataforma está en producción con el parque inventariado y las entidades asignadas
+automáticamente. La hoja de ruta inmediata, por orden de prioridad:</p>
+<ol>
+<li><strong>Copias de seguridad de la base de datos.</strong></li>
+<li><strong>Ajuste de rendimiento</strong>: OPcache al 100% de uso con 128 MB, a subir a 256 MB;
+   revisión de <code>innodb_buffer_pool_size</code> en MariaDB.</li>
+<li><strong>Inyección de datos históricos por número de serie</strong> desde las hojas de cálculo
+   originales, mediante el plugin Data Injection.</li>
+<li><strong>Cuadros de mando e informes de obsolescencia por entidad.</strong></li>
+</ol>
+<p>Aplazado de forma consciente: descubrimiento de red por SNMP, inventario de
+hipervisores, LDAP por entidad, cumplimiento de licencias y despliegue del agente en
+macOS a escala.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
